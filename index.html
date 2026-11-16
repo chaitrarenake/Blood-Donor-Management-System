@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <base target="_top">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>BloodConnect</title>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f8f8f8;
+      color: #333;
+    }
+
+    header {
+      background: #c62828;
+      color: white;
+      padding: 20px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    header h2 {
+      font-size: 25px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ffdada;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #b71c1c, #ef5350);
+      color: white;
+      text-align: center;
+      padding: 85px 20px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    button {
+      background: #c62828;
+      color: white;
+      border: none;
+      padding: 13px 22px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: #8e0000;
+    }
+
+    .hero button {
+      background: white;
+      color: #c62828;
+      margin: 5px;
+      font-weight: bold;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 40px 7%;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px #ddd;
+    }
+
+    .stat-card h2 {
+      color: #c62828;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      padding: 40px 7%;
+      display: none;
+    }
+
+    #home {
+      display: block;
+    }
+
+    .section h2 {
+      color: #c62828;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .form-container {
+      background: white;
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #ddd;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+
+    .form-container button {
+      width: 100%;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .search-box {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .results {
+      max-width: 900px;
+      margin: 25px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 15px;
+    }
+
+    .donor-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #ddd;
+      border-left: 5px solid #c62828;
+    }
+
+    .blood {
+      font-size: 28px;
+      color: #c62828;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      padding: 25px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    @media(max-width: 600px) {
+
+      header {
+        justify-content: center;
+      }
+
+      nav {
+        justify-content: center;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+
+  <h2>🩸 BloodConnect</h2>
+
+  <nav>
+
+    <a onclick="showPage('home')">Home</a>
+
+    <a onclick="showPage('register')">Register Donor</a>
+
+    <a onclick="showPage('search')">Find Donors</a>
+
+    <a onclick="showPage('request')">Request Blood</a>
+
+  </nav>
+
+</header>
+
+
+<!-- HOME PAGE -->
+
+<div id="home" class="section">
+
+  <div class="hero">
+
+    <h1>Donate Blood, Save Lives ❤️</h1>
+
+    <p>
+      A single donation can make a difference.
+      Connect blood donors with people in need.
+    </p>
+
+    <button onclick="showPage('register')">
+      Become a Donor
+    </button>
+
+    <button onclick="showPage('search')">
+      Find Blood Donors
+    </button>
+
+  </div>
+
+  <div class="stats">
+
+    <div class="stat-card">
+
+      <h2 id="totalDonors">0</h2>
+
+      <p>Registered Donors</p>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h2 id="availableDonors">0</h2>
+
+      <p>Available Donors</p>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h2 id="totalRequests">0</h2>
+
+      <p>Total Requests</p>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h2 id="pendingRequests">0</h2>
+
+      <p>Pending Requests</p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- DONOR REGISTRATION -->
+
+<div id="register" class="section">
+
+  <h2>Donor Registration</h2>
+
+  <div class="form-container">
+
+    <form id="donorForm">
+
+      <div class="form-grid">
+
+        <input type="text" id="dname"
+          placeholder="Full Name" required>
+
+        <input type="number" id="dage"
+          placeholder="Age" min="18" max="65" required>
+
+        <select id="dgender" required>
+
+          <option value="">Select Gender</option>
+
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+
+        </select>
+
+        <select id="dblood" required>
+
+          <option value="">Select Blood Group</option>
+
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+          <option>O+</option>
+          <option>O-</option>
+
+        </select>
+
+        <input type="tel" id="dphone"
+          placeholder="10 Digit Phone Number"
+          pattern="[0-9]{10}" required>
+
+        <input type="email" id="demail"
+          placeholder="Email Address">
+
+        <input type="text" id="dstate"
+          placeholder="State">
+
+        <input type="text" id="ddistrict"
+          placeholder="District">
+
+        <input type="text" id="dcity"
+          placeholder="City" required>
+
+      </div>
+
+      <button type="submit">Register as Donor</button>
+
+    </form>
+
+    <div id="donorMessage" class="message"></div>
+
+  </div>
+
+</div>
+
+
+<!-- SEARCH DONORS -->
+
+<div id="search" class="section">
+
+  <h2>Find Blood Donors</h2>
+
+  <div class="search-box">
+
+    <select id="searchBlood">
+
+      <option value="">All Blood Groups</option>
+
+      <option>A+</option>
+      <option>A-</option>
+      <option>B+</option>
+      <option>B-</option>
+      <option>AB+</option>
+      <option>AB-</option>
+      <option>O+</option>
+      <option>O-</option>
+
+    </select>
+
+    <input type="text" id="searchCity"
+      placeholder="Enter City">
+
+    <button onclick="findDonors()">
+      Search Donors
+    </button>
+
+  </div>
+
+  <div id="donorResults" class="results"></div>
+
+</div>
+
+
+<!-- BLOOD REQUEST -->
+
+<div id="request" class="section">
+
+  <h2>Request Blood</h2>
+
+  <div class="form-container">
+
+    <form id="requestForm">
+
+      <input type="text" id="pname"
+        placeholder="Patient Name" required>
+
+      <select id="pblood" required>
+
+        <option value="">Required Blood Group</option>
+
+        <option>A+</option>
+        <option>A-</option>
+        <option>B+</option>
+        <option>B-</option>
+        <option>AB+</option>
+        <option>AB-</option>
+        <option>O+</option>
+        <option>O-</option>
+
+      </select>
+
+      <input type="text" id="hospital"
+        placeholder="Hospital Name" required>
+
+      <input type="text" id="pstate"
+        placeholder="State">
+
+      <input type="text" id="pdistrict"
+        placeholder="District">
+
+      <input type="text" id="pcity"
+        placeholder="City">
+
+      <input type="number" id="units"
+        placeholder="Required Units" min="1" max="20" required>
+
+      <input type="tel" id="pphone"
+        placeholder="Contact Number"
+        pattern="[0-9]{10}" required>
+
+      <label>Required Date</label>
+
+      <input type="date" id="requiredDate" required>
+
+      <select id="emergency" required>
+
+        <option value="">Select Emergency Level</option>
+
+        <option>Normal</option>
+        <option>Urgent</option>
+        <option>Critical</option>
+
+      </select>
+
+      <button type="submit">
+        Submit Blood Request
+      </button>
+
+    </form>
+
+    <div id="requestMessage" class="message"></div>
+
+  </div>
+
+</div>
+
+
+<footer>
+
+  <h3>🩸 BloodConnect</h3>
+
+  <p>Connecting Donors and Saving Lives</p>
+
+  <p>Blood donation is a gift of life.</p>
+
+</footer>
+
+
+<script>
+
+// ======================================
+// PAGE NAVIGATION
+// ======================================
+
+function showPage(page) {
+
+  document.querySelectorAll('.section').forEach(section => {
+
+    section.style.display = 'none';
+
+  });
+
+  document.getElementById(page).style.display = 'block';
+
+  window.scrollTo(0, 0);
+
+  if (page === 'home') {
+    loadDashboard();
+  }
+
+}
+
+
+// ======================================
+// LOAD DASHBOARD
+// ======================================
+
+function loadDashboard() {
+
+  google.script.run
+
+    .withSuccessHandler(function(data) {
+
+      document.getElementById('totalDonors').textContent =
+        data.totalDonors;
+
+      document.getElementById('availableDonors').textContent =
+        data.availableDonors;
+
+      document.getElementById('totalRequests').textContent =
+        data.totalRequests;
+
+      document.getElementById('pendingRequests').textContent =
+        data.pendingRequests;
+
+    })
+
+    .withFailureHandler(showError)
+
+    .getDashboardStats();
+
+}
+
+
+// ======================================
+// REGISTER DONOR
+// ======================================
+
+document.getElementById('donorForm')
+.addEventListener('submit', function(e) {
+
+  e.preventDefault();
+
+  const data = {
+
+    name: document.getElementById('dname').value,
+
+    age: document.getElementById('dage').value,
+
+    gender: document.getElementById('dgender').value,
+
+    bloodGroup: document.getElementById('dblood').value,
+
+    phone: document.getElementById('dphone').value,
+
+    email: document.getElementById('demail').value,
+
+    state: document.getElementById('dstate').value,
+
+    district: document.getElementById('ddistrict').value,
+
+    city: document.getElementById('dcity').value
+
+  };
+
+  const message = document.getElementById('donorMessage');
+
+  message.textContent = 'Registering...';
+
+  google.script.run
+
+    .withSuccessHandler(function(response) {
+
+      message.textContent = response;
+
+      document.getElementById('donorForm').reset();
+
+      loadDashboard();
+
+    })
+
+    .withFailureHandler(function(error) {
+
+      message.textContent = error.message;
+
+    })
+
+    .registerDonor(data);
+
+});
+
+
+// ======================================
+// SEARCH DONORS
+// ======================================
+
+function findDonors() {
+
+  const blood = document.getElementById('searchBlood').value;
+
+  const city = document.getElementById('searchCity').value;
+
+  const results = document.getElementById('donorResults');
+
+  results.textContent = 'Searching...';
+
+  google.script.run
+
+    .withSuccessHandler(function(data) {
+
+      results.innerHTML = '';
+
+      if (data.length === 0) {
+
+        results.textContent = 'No matching available donors found.';
+
+        return;
+
+      }
+
+      data.forEach(function(donor) {
+
+        const card = document.createElement('div');
+
+        card.className = 'donor-card';
+
+        const bloodText = document.createElement('div');
+        bloodText.className = 'blood';
+        bloodText.textContent = donor.bloodGroup;
+
+        const name = document.createElement('h3');
+        name.textContent = donor.name;
+
+        const age = document.createElement('p');
+        age.textContent = 'Age: ' + donor.age;
+
+        const cityText = document.createElement('p');
+        cityText.textContent = 'City: ' + donor.city;
+
+        const district = document.createElement('p');
+        district.textContent = 'District: ' + donor.district;
+
+        const phone = document.createElement('p');
+        phone.textContent = 'Phone: ' + donor.phone;
+
+        card.append(
+          bloodText,
+          name,
+          age,
+          cityText,
+          district,
+          phone
+        );
+
+        results.appendChild(card);
+
+      });
+
+    })
+
+    .withFailureHandler(function(error) {
+
+      results.textContent = error.message;
+
+    })
+
+    .searchDonors(blood, city);
+
+}
+
+
+// ======================================
+// SUBMIT BLOOD REQUEST
+// ======================================
+
+document.getElementById('requestForm')
+.addEventListener('submit', function(e) {
+
+  e.preventDefault();
+
+  const data = {
+
+    name: document.getElementById('pname').value,
+
+    bloodGroup: document.getElementById('pblood').value,
+
+    hospital: document.getElementById('hospital').value,
+
+    state: document.getElementById('pstate').value,
+
+    district: document.getElementById('pdistrict').value,
+
+    city: document.getElementById('pcity').value,
+
+    units: document.getElementById('units').value,
+
+    phone: document.getElementById('pphone').value,
+
+    requiredDate: document.getElementById('requiredDate').value,
+
+    emergency: document.getElementById('emergency').value
+
+  };
+
+  const message = document.getElementById('requestMessage');
+
+  message.textContent = 'Submitting request...';
+
+  google.script.run
+
+    .withSuccessHandler(function(response) {
+
+      message.textContent = response;
+
+      document.getElementById('requestForm').reset();
+
+      loadDashboard();
+
+    })
+
+    .withFailureHandler(function(error) {
+
+      message.textContent = error.message;
+
+    })
+
+    .submitBloodRequest(data);
+
+});
+
+
+// ======================================
+// ERROR HANDLING
+// ======================================
+
+function showError(error) {
+
+  alert(error.message);
+
+}
+
+
+// LOAD HOME PAGE DATA
+
+window.onload = function() {
+
+  loadDashboard();
+
+};
+
+</script>
+
+</body>
+
+</html>
